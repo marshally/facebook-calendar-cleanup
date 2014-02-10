@@ -1,9 +1,7 @@
 require 'rubygems'
 require 'bundler'
+
 Bundler.require
-require 'sinatra'
-require 'HTTParty'
-# require "sinatra/reloader" if development?
 
 get %r{\/clean\/(.+)} do
 	url = "#{params[:captures].first}"
@@ -16,7 +14,7 @@ get %r{\/clean\/(.+)} do
 
 	contents.split("\r\n").map{|line|
 		line.
-			gsub(/([^\\])(,)/, '\1\\,'). # clean up commas
+			gsub(/([^\\])(,)/, '\1\\,').                                  # clean up commas
 			gsub(/(DTSTART)\:(\d\d\d\d\d\d\d\d)\z/, '\1;VALUE=DATE:\2').  # clean up dates
 			gsub(/(DTEND)\:(\d\d\d\d\d\d\d\d)\z/, '\1;VALUE=DATE:\2')     # clean up dates
 			# gsub(/([^:])(\/+)/, '\1\\/')   # clean up stray back slashes
