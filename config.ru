@@ -13,10 +13,15 @@ get %r{\/clean\/(.+)} do
 	contents = HTTParty.get(url, query: request.query_string).body
 
 	contents.split("\r\n").map{|line|
-		line.
-			gsub(/([^\\])(,)/, '\1\\,').                                  # clean up commas
-			gsub(/(DTSTART)\:(\d\d\d\d\d\d\d\d)\z/, '\1;VALUE=DATE:\2').  # clean up dates
-			gsub(/(DTEND)\:(\d\d\d\d\d\d\d\d)\z/, '\1;VALUE=DATE:\2')     # clean up dates
-			# gsub(/([^:])(\/+)/, '\1\\/')   # clean up stray back slashes
+		if line.include?("ORGANIZER") || line.include?("SUMMARY")
+			# line.gsub!(/([^:])(\/+)/, '\1\\/')
+			line.gsub!(/([^:])(\/+)/, '\1\\/')
+			line.gsub!(/([^\\])(")/, '\1\\"')                                # clean up double quotes
+		end
+
+		line.gsub!(/([^\\])(,)/, '\1\\,')                                  # clean up commas
+		line.gsub!(/(DTSTART)\:(\d\d\d\d\d\d\d\d)\z/, '\1;VALUE=DATE:\2')  # clean up dates
+		line.gsub!(/(DTEND)\:(\d\d\d\d\d\d\d\d)\z/, '\1;VALUE=DATE:\2')    # clean up dates
+		line
 	}.join "\r\n"
 end
