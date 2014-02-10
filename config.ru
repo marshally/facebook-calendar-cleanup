@@ -14,9 +14,9 @@ get %r{\/clean\/(.+)} do
 
 	contents.split("\r\n").map{|line|
 		if line.include?("ORGANIZER") || line.include?("SUMMARY")
-			# line.gsub!(/([^:])(\/+)/, '\1\\/')
-			line.gsub!(/([^:])(\/+)/, '\1\\/')
-			line.gsub!(/([^\\])(")/, '\1\\"')                                # clean up double quotes
+			line.gsub!('"', '')
+			line.gsub!('\\', '')
+			line.gsub!('\/', '')
 		end
 
 		line.gsub!(/([^\\])(,)/, '\1\\,')                                  # clean up commas
