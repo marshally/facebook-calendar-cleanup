@@ -1,4 +1,6 @@
-require "bundler/setup"
+require 'rubygems'
+require 'bundler'
+Bundler.require
 require 'sinatra'
 require 'HTTParty'
 # require "sinatra/reloader" if development?
